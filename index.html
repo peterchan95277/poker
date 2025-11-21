@@ -15,614 +15,592 @@
 </head>
 <body>
 <p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
-<p class="p1"><span class="s1">&lt;html lang="zh-TW"&gt; &lt;head&gt; &lt;meta charset="UTF-8"&gt; &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt; &lt;title&gt;德州撲克勝率計算機&lt;/title&gt; &lt;!-- PWA 核心：連結到 Manifest 檔案 --&gt; &lt;link rel="manifest" href="manifest.json"&gt; &lt;!-- 載入 Tailwind CSS --&gt; &lt;script src="https://www.google.com/search?q=https://cdn.tailwindcss.com"&gt;&lt;/script&gt; &lt;link href="https://www.google.com/search?q=https://fonts.googleapis.com/css2%3Ffamily%3DInter:wght%40400%3B600%3B700%26display%3Dswap" rel="stylesheet"&gt; &lt;style&gt; /* 使用 Inter 字體 <i>/ body { font-family: 'Inter', sans-serif; background-color: #f7f7f7; } /</i> 讓下拉選單中的花色有顏色 <i>/ .card-select option.red-suit { color: #ef4444; /</i> Red <i>/ } .card-select option.black-suit { color: #1f2937; /</i> Dark Gray */ } .card-select option:disabled { background-color: #e5e7eb; color: #9ca3af; } &lt;/style&gt; &lt;/head&gt; &lt;body class="p-4 sm:p-8 min-h-screen bg-gray-900 text-white"&gt;</span></p>
-<p class="p2"><span class="s1">&lt;div class="max-w-4xl mx-auto"&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;header class="text-center mb-10"&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;h1 class="text-3xl sm:text-4xl font-bold text-yellow-400"&gt;德州撲克勝率計算機&lt;/h1&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;p class="text-gray-400 mt-2"&gt;使用 Monte Carlo 模擬計算您的手牌勝率&lt;/p&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/header&gt;</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- 卡牌輸入區塊 --&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="input-section" class="bg-gray-800 p-6 rounded-xl shadow-2xl mb-8"&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;h2 class="text-xl font-semibold mb-4 text-gray-200"&gt;選取牌局資訊 (下拉選單模式)&lt;/h2&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;p id="picker-status" class="text-center text-sm font-semibold p-2 rounded bg-gray-700 text-yellow-300 transition duration-300"&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>請從下拉選單中選取牌局中所有已知的牌。</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/p&gt;</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- 總玩家人數選項 --&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="mt-4 p-4 bg-gray-700 rounded-lg"&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;label class="block text-lg font-medium text-gray-200 mb-2"&gt;總玩家人數 (包括您)&lt;/label&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;select id="num-players" class="w-full p-2 bg-white text-gray-900 rounded-md border border-gray-300 shadow-sm text-base focus:ring-yellow-500 focus:border-yellow-500"&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&lt;option value="2"&gt;2 (單挑)&lt;/option&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&lt;option value="3"&gt;3&lt;/option&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&lt;option value="4"&gt;4&lt;/option&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&lt;option value="5"&gt;5&lt;/option&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&lt;option value="6"&gt;6&lt;/option&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&lt;option value="7"&gt;7&lt;/option&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&lt;option value="8"&gt;8&lt;/option&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&lt;option value="9"&gt;9 (滿桌)&lt;/option&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/select&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- 玩家手牌 1 --&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="p-4 bg-gray-700 rounded-lg mt-4 selection-target" id="p1-selector"&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;label class="block text-lg font-medium text-blue-300 mb-2"&gt;玩家 1 手牌 (您的手牌，2 張)&lt;/label&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div id="p1-display" class="card-display-area min-h-[50px] flex flex-wrap items-center gap-2 p-2 bg-gray-900 rounded border-2 border-transparent"&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&lt;!-- Dropdowns are dynamically inserted here --&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- 玩家手牌 2 (可選的已知對手) --&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="p-4 bg-gray-700 rounded-lg mt-4 selection-target" id="p2-selector"&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;label class="block text-lg font-medium text-red-300 mb-2"&gt;玩家 2 手牌 (已知對手，0 或 2 張，選填)&lt;/label&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div id="p2-display" class="card-display-area min-h-[50px] flex flex-wrap items-center gap-2 p-2 bg-gray-900 rounded border-2 border-transparent"&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&lt;!-- Dropdowns are dynamically inserted here --&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- 公共牌 --&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="mt-6 p-4 bg-gray-700 rounded-lg selection-target" id="board-selector"&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;label class="block text-lg font-medium text-gray-200 mb-2"&gt;公共牌 (Flop, Turn, River，0-5 張)&lt;/label&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div id="board-display" class="card-display-area min-h-[50px] flex flex-wrap items-center gap-2 p-2 bg-gray-900 rounded border-2 border-transparent"&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&lt;!-- Dropdowns are dynamically inserted here --&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- 計算按鈕 --&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;button id="calculate-btn" class="w-full mt-8 py-3 px-6 bg-green-600 hover:bg-green-700 text-white font-bold text-xl rounded-lg shadow-lg transform transition duration-150 hover:scale-[1.01] focus:outline-none focus:ring-4 focus:ring-green-500/50"&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>計算勝率</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1">&lt;html lang="zh-TW"&gt; &lt;head&gt; &lt;meta charset="UTF-8"&gt; &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt; &lt;title&gt;德州撲克勝率計算機&lt;/title&gt; &lt;!-- PWA 核心：連結到 Manifest 檔案 --&gt; &lt;link rel="manifest" href="manifest.json"&gt; &lt;!-- 載入 Tailwind CSS (修正：使用正確的 CDN 網址) --&gt; &lt;script src="https://www.google.com/search?q=https://cdn.tailwindcss.com"&gt;&lt;/script&gt; &lt;!-- 載入 Inter 字體 (修正：使用正確的 CDN 網址) --&gt; &lt;link href="https://www.google.com/search?q=https://fonts.googleapis.com/css2%3Ffamily%3DInter:wght%40400%3B600%3B700%26display%3Dswap" rel="stylesheet"&gt; &lt;style&gt; /* 使用 Inter 字體 <i>/ body { font-family: 'Inter', sans-serif; background-color: #f7f7f7; } /</i> 讓下拉選單中的花色有顏色 <i>/ .card-select option.red-suit { color: #ef4444; /</i> Red <i>/ } .card-select option.black-suit { color: #1f2937; /</i> Dark Gray */ } .card-select option:disabled { background-color: #e5e7eb; color: #9ca3af; } &lt;/style&gt; &lt;/head&gt; &lt;body class="p-4 sm:p-8 min-h-screen bg-gray-900 text-white"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;div class="max-w-4xl mx-auto"&gt; &lt;header class="text-center mb-10"&gt; &lt;h1 class="text-3xl sm:text-4xl font-bold text-yellow-400"&gt;德州撲克勝率計算機&lt;/h1&gt; &lt;p class="text-gray-400 mt-2"&gt;使用 Monte Carlo 模擬計算您的手牌勝率&lt;/p&gt; &lt;/header&gt;</span></p>
+<p class="p2"><span class="s1">&lt;!-- 卡牌輸入區塊 --&gt;</span></p>
+<p class="p2"><span class="s1">&lt;div id="input-section" class="bg-gray-800 p-6 rounded-xl shadow-2xl mb-8"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;h2 class="text-xl font-semibold mb-4 text-gray-200"&gt;選取牌局資訊 (下拉選單模式)&lt;/h2&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;p id="picker-status" class="text-center text-sm font-semibold p-2 rounded bg-gray-700 text-yellow-300 transition duration-300"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>請從下拉選單中選取牌局中所有已知的牌。</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/p&gt;</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- 總玩家人數選項 --&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="mt-4 p-4 bg-gray-700 rounded-lg"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;label class="block text-lg font-medium text-gray-200 mb-2"&gt;總玩家人數 (包括您)&lt;/label&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;select id="num-players" class="w-full p-2 bg-white text-gray-900 rounded-md border border-gray-300 shadow-sm text-base focus:ring-yellow-500 focus:border-yellow-500"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option value="2"&gt;2 (單挑)&lt;/option&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option value="3"&gt;3&lt;/option&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option value="4"&gt;4&lt;/option&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option value="5"&gt;5&lt;/option&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option value="6"&gt;6&lt;/option&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option value="7"&gt;7&lt;/option&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option value="8"&gt;8&lt;/option&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option value="9"&gt;9 (滿桌)&lt;/option&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/select&gt;</span></p>
 <p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
 <p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- 結果顯示區塊 (保持不變) --&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="results-section" class="bg-gray-800 p-6 rounded-xl shadow-2xl"&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;h2 class="text-xl font-semibold text-gray-200 mb-4"&gt;計算結果 (Monte Carlo 模擬 10,000 次)&lt;/h2&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="loading-spinner" class="text-center hidden"&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500 mx-auto"&gt;&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;p class="mt-3 text-yellow-400"&gt;正在模擬牌局...&lt;/p&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="results-display" class="hidden"&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="grid grid-cols-3 gap-4 text-center"&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="p-4 bg-gray-900 rounded-lg border-b-4 border-green-500"&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p class="text-3xl font-bold text-green-400" id="win-rate"&gt;0.00%&lt;/p&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p class="text-sm text-gray-400 mt-1"&gt;勝率 (Player 1)&lt;/p&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="p-4 bg-gray-900 rounded-lg border-b-4 border-yellow-500"&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p class="text-3xl font-bold text-yellow-300" id="tie-rate"&gt;0.00%&lt;/p&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p class="text-sm text-gray-400 mt-1"&gt;和局率&lt;/p&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="p-4 bg-gray-900 rounded-lg border-b-4 border-red-500"&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p class="text-3xl font-bold text-red-400" id="loss-rate"&gt;0.00%&lt;/p&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p class="text-sm text-gray-400 mt-1"&gt;敗率 (Player 1)&lt;/p&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="error-message" class="hidden mt-4 p-4 bg-red-800 rounded-lg text-red-200"&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- 錯誤訊息將顯示在這裡 --&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- 玩家手牌 1 --&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="p-4 bg-gray-700 rounded-lg mt-4 selection-target" id="p1-selector"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;label class="block text-lg font-medium text-blue-300 mb-2"&gt;玩家 1 手牌 (您的手牌，2 張)&lt;/label&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="p1-display" class="card-display-area min-h-[50px] flex flex-wrap items-center gap-2 p-2 bg-gray-900 rounded border-2 border-transparent"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- Dropdowns are dynamically inserted here --&gt;</span></p>
 <p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
 <p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- 玩家手牌 2 (可選的已知對手) --&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="p-4 bg-gray-700 rounded-lg mt-4 selection-target" id="p2-selector"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;label class="block text-lg font-medium text-red-300 mb-2"&gt;玩家 2 手牌 (已知對手，0 或 2 張，選填)&lt;/label&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="p2-display" class="card-display-area min-h-[50px] flex flex-wrap items-center gap-2 p-2 bg-gray-900 rounded border-2 border-transparent"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- Dropdowns are dynamically inserted here --&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- 公共牌 --&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="mt-6 p-4 bg-gray-700 rounded-lg selection-target" id="board-selector"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;label class="block text-lg font-medium text-gray-200 mb-2"&gt;公共牌 (Flop, Turn, River，0-5 張)&lt;/label&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="board-display" class="card-display-area min-h-[50px] flex flex-wrap items-center gap-2 p-2 bg-gray-900 rounded border-2 border-transparent"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- Dropdowns are dynamically inserted here --&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- 計算按鈕 --&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;button id="calculate-btn" class="w-full mt-8 py-3 px-6 bg-green-600 hover:bg-green-700 text-white font-bold text-xl rounded-lg shadow-lg transform transition duration-150 hover:scale-[1.01] focus:outline-none focus:ring-4 focus:ring-green-500/50"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>計算勝率</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/button&gt;</span></p>
 <p class="p2"><span class="s1">&lt;/div&gt;</span></p>
 <p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1">&lt;script&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>// PWA Service Worker 註冊</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>if ('serviceWorker' in navigator) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>window.addEventListener('load', () =&gt; {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>// 注意: 在某些環境中，Service Worker 只能在根目錄或與 index.html 同級的目錄運行</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>navigator.serviceWorker.register('/service-worker.js')</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">          </span>.then(registration =&gt; {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>console.log('Service Worker 註冊成功:', registration.scope);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">          </span>})</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">          </span>.catch(error =&gt; {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>console.log('Service Worker 註冊失敗:', error);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">          </span>});</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">      </span>});</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1">&lt;!-- 結果顯示區塊 (保持不變) --&gt;</span></p>
+<p class="p2"><span class="s1">&lt;div id="results-section" class="bg-gray-800 p-6 rounded-xl shadow-2xl"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;h2 class="text-xl font-semibold text-gray-200 mb-4"&gt;計算結果 (Monte Carlo 模擬 10,000 次)&lt;/h2&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="loading-spinner" class="text-center hidden"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500 mx-auto"&gt;&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;p class="mt-3 text-yellow-400"&gt;正在模擬牌局...&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
 <p class="p3"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>// --- 全局常數與元素 ---</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const RANKS = '23456789TJQKA';</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const SUITS = 'shdc';</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const NUM_ITERATIONS = 10000;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="results-display" class="hidden"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="grid grid-cols-3 gap-4 text-center"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="p-4 bg-gray-900 rounded-lg border-b-4 border-green-500"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p class="text-3xl font-bold text-green-400" id="win-rate"&gt;0.00%&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p class="text-sm text-gray-400 mt-1"&gt;勝率 (Player 1)&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="p-4 bg-gray-900 rounded-lg border-b-4 border-yellow-500"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p class="text-3xl font-bold text-yellow-300" id="tie-rate"&gt;0.00%&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p class="text-sm text-gray-400 mt-1"&gt;和局率&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="p-4 bg-gray-900 rounded-lg border-b-4 border-red-500"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p class="text-3xl font-bold text-red-400" id="loss-rate"&gt;0.00%&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p class="text-sm text-gray-400 mt-1"&gt;敗率 (Player 1)&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
 <p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const resultsDisplay = document.getElementById('results-display');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const loadingSpinner = document.getElementById('loading-spinner');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const calculateBtn = document.getElementById('calculate-btn');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const winRateEl = document.getElementById('win-rate');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const tieRateEl = document.getElementById('tie-rate');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const lossRateEl = document.getElementById('loss-rate');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const errorMsgEl = document.getElementById('error-message');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const pickerStatusEl = document.getElementById('picker-status');</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="error-message" class="hidden mt-4 p-4 bg-red-800 rounded-lg text-red-200"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- 錯誤訊息將顯示在這裡 --&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1">&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">&lt;script&gt; // PWA Service Worker 註冊 if ('serviceWorker' in navigator) { window.addEventListener('load', () =&gt; { // 注意: 在某些環境中，Service Worker 只能在根目錄或與 index.html 同級的目錄運行 navigator.serviceWorker.register('/service-worker.js') .then(registration =&gt; { console.log('Service Worker 註冊成功:', registration.scope); }) .catch(error =&gt; { console.log('Service Worker 註冊失敗:', error); }); }); }</span></p>
+<p class="p2"><span class="s1">// --- 全局常數與元素 ---</span></p>
+<p class="p2"><span class="s1">const RANKS = &amp;#39;23456789TJQKA&amp;#39;;</span></p>
+<p class="p2"><span class="s1">const SUITS = &amp;#39;shdc&amp;#39;;</span></p>
+<p class="p2"><span class="s1">const NUM_ITERATIONS = 10000;</span></p>
 <p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>// 輸入顯示區塊</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const p1DisplayEl = document.getElementById('p1-display');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const p2DisplayEl = document.getElementById('p2-display');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const boardDisplayEl = document.getElementById('board-display');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const numPlayersEl = document.getElementById('num-players'); // 新增的玩家人數元素</span></p>
+<p class="p2"><span class="s1">const resultsDisplay = document.getElementById(&amp;#39;results-display&amp;#39;);</span></p>
+<p class="p2"><span class="s1">const loadingSpinner = document.getElementById(&amp;#39;loading-spinner&amp;#39;);</span></p>
+<p class="p2"><span class="s1">const calculateBtn = document.getElementById(&amp;#39;calculate-btn&amp;#39;);</span></p>
+<p class="p2"><span class="s1">const winRateEl = document.getElementById(&amp;#39;win-rate&amp;#39;);</span></p>
+<p class="p2"><span class="s1">const tieRateEl = document.getElementById(&amp;#39;tie-rate&amp;#39;);</span></p>
+<p class="p2"><span class="s1">const lossRateEl = document.getElementById(&amp;#39;loss-rate&amp;#39;);</span></p>
+<p class="p2"><span class="s1">const errorMsgEl = document.getElementById(&amp;#39;error-message&amp;#39;);</span></p>
+<p class="p2"><span class="s1">const pickerStatusEl = document.getElementById(&amp;#39;picker-status&amp;#39;);</span></p>
 <p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>// --- 狀態管理：使用卡牌字串陣列來儲存選取狀態 ---</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>let player1CardStrs = ['', '']; // 玩家 1 的兩張牌 (必填)</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>let player2CardStrs = ['', '']; // 玩家 2 的兩張牌 (選填)</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>let boardCardStrs = ['', '', '', '', '']; // 公共牌最多五張</span></p>
+<p class="p2"><span class="s1">// 輸入顯示區塊</span></p>
+<p class="p2"><span class="s1">const p1DisplayEl = document.getElementById(&amp;#39;p1-display&amp;#39;);</span></p>
+<p class="p2"><span class="s1">const p2DisplayEl = document.getElementById(&amp;#39;p2-display&amp;#39;);</span></p>
+<p class="p2"><span class="s1">const boardDisplayEl = document.getElementById(&amp;#39;board-display&amp;#39;);</span></p>
+<p class="p2"><span class="s1">const numPlayersEl = document.getElementById(&amp;#39;num-players&amp;#39;); // 新增的玩家人數元素</span></p>
 <p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>// 卡牌字串與花色符號的映射</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const SUIT_SYMBOLS = { 's': '♠', 'h': '♥', 'd': '♦', 'c': '♣' };</span></p>
+<p class="p2"><span class="s1">// --- 狀態管理：使用卡牌字串陣列來儲存選取狀態 ---</span></p>
+<p class="p2"><span class="s1">let player1CardStrs = [&amp;#39;&amp;#39;, &amp;#39;&amp;#39;]; // 玩家 1 的兩張牌 (必填)</span></p>
+<p class="p2"><span class="s1">let player2CardStrs = [&amp;#39;&amp;#39;, &amp;#39;&amp;#39;]; // 玩家 2 的兩張牌 (選填)</span></p>
+<p class="p2"><span class="s1">let boardCardStrs = [&amp;#39;&amp;#39;, &amp;#39;&amp;#39;, &amp;#39;&amp;#39;, &amp;#39;&amp;#39;, &amp;#39;&amp;#39;]; // 公共牌最多五張</span></p>
 <p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>// --- 輔助函數：卡牌處理與驗證 (保持不變) ---</span></p>
+<p class="p2"><span class="s1">// 卡牌字串與花色符號的映射</span></p>
+<p class="p2"><span class="s1">const SUIT_SYMBOLS = { &amp;#39;s&amp;#39;: &amp;#39;♠&amp;#39;, &amp;#39;h&amp;#39;: &amp;#39;♥&amp;#39;, &amp;#39;d&amp;#39;: &amp;#39;♦&amp;#39;, &amp;#39;c&amp;#39;: &amp;#39;♣&amp;#39; };</span></p>
 <p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>/**</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>* 將卡牌字串 (例如 'As') 轉換為物件 { rank: 14, suit: 's', str: 'AS' }</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>* @param {string} cardStr - 卡牌字串</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>* @returns {{rank: number, suit: string, str: string} | null} - 卡牌物件或 null (如果無效)</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>*/</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>function parseCard(cardStr) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>if (cardStr.length !== 2) return null;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const rankStr = cardStr[0].toUpperCase();</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const suit = cardStr[1].toLowerCase();</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const rankIndex = RANKS.indexOf(rankStr);</span></p>
+<p class="p2"><span class="s1">// --- 輔助函數：卡牌處理與驗證 (保持不變) ---</span></p>
 <p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>if (rankIndex === -1 || SUITS.indexOf(suit) === -1) return null;</span></p>
+<p class="p2"><span class="s1">/**</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space"> </span>* 將卡牌字串 (例如 &amp;#39;As&amp;#39;) 轉換為物件 { rank: 14, suit: &amp;#39;s&amp;#39;, str: &amp;#39;AS&amp;#39; }</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space"> </span>* @param {string} cardStr - 卡牌字串</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space"> </span>* @returns {{rank: number, suit: string, str: string} | null} - 卡牌物件或 null (如果無效)</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space"> </span>*/</span></p>
+<p class="p2"><span class="s1">function parseCard(cardStr) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>if (cardStr.length !== 2) return null;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const rankStr = cardStr[0].toUpperCase();</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const suit = cardStr[1].toLowerCase();</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const rankIndex = RANKS.indexOf(rankStr);</span></p>
 <p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>// 撲克牌等級 (A=14, K=13, ..., 2=2)</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const rank = rankIndex + 2;<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>if (rankIndex === -1 || SUITS.indexOf(suit) === -1) return null;</span></p>
 <p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>return { rank, suit, str: cardStr.toUpperCase() };</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>// 撲克牌等級 (A=14, K=13, ..., 2=2)</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const rank = rankIndex + 2;<span class="Apple-converted-space"> </span></span></p>
 <p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>/**</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>* 建立一副完整的卡牌</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>* @returns {Array&lt;{rank: number, suit: string, str: string}&gt;} - 完整的牌組</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>*/</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>function createDeck() {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const deck = [];</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>for (const suit of SUITS) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>for (let i = 0; i &lt; RANKS.length; i++) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>const rankStr = RANKS[i];</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>const rank = i + 2;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>deck.push({ rank, suit, str: (rankStr + suit).toUpperCase() });</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>return { rank, suit, str: cardStr.toUpperCase() };</span></p>
+<p class="p2"><span class="s1">}</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1">/**</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space"> </span>* 建立一副完整的卡牌</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space"> </span>* @returns {Array&amp;lt;{rank: number, suit: string, str: string}&amp;gt;} - 完整的牌組</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space"> </span>*/</span></p>
+<p class="p2"><span class="s1">function createDeck() {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const deck = [];</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>for (const suit of SUITS) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>for (let i = 0; i &amp;lt; RANKS.length; i++) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const rankStr = RANKS[i];</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const rank = i + 2;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>deck.push({ rank, suit, str: (rankStr + suit).toUpperCase() });</span></p>
 <p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>return deck;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>return deck;</span></p>
+<p class="p2"><span class="s1">}</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1">/**</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space"> </span>* 獲取所有當前已被選取的卡牌字串</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space"> </span>*/</span></p>
+<p class="p2"><span class="s1">function getAllSelectedCardStrs() {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>return [...player1CardStrs, ...player2CardStrs, ...boardCardStrs].filter(s =&amp;gt; s !== &amp;#39;&amp;#39;);</span></p>
+<p class="p2"><span class="s1">}</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1">// --- UI 渲染與互動邏輯 (Dropdowns) ---</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1">/**</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space"> </span>* 獲取所有 52 張卡牌的選項 HTML</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space"> </span>* @returns {Array&amp;lt;string&amp;gt;} 包含所有卡牌字串的陣列 (例如 &amp;#39;AS&amp;#39;, &amp;#39;KH&amp;#39;, &amp;#39;3D&amp;#39;, ...)</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space"> </span>*/</span></p>
+<p class="p2"><span class="s1">function getFullDeckCardStrs() {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const deck = createDeck();</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>return deck.map(c =&amp;gt; c.str);</span></p>
+<p class="p2"><span class="s1">}</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1">/**</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space"> </span>* 生成單一卡牌下拉選單的 HTML</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space"> </span>* @param {string} slotId - 欄位 ID (例如 &amp;#39;p1-0&amp;#39;, &amp;#39;board-3&amp;#39;)</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space"> </span>* @param {string} currentValue - 當前選中的卡牌字串</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space"> </span>* @param {string[]} allSelected - 所有已被選取的卡牌字串</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space"> </span>* @param {boolean} allowEmpty - 是否允許 &amp;quot;-- (空牌) --&amp;quot; 選項</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space"> </span>* @returns {string} HTML &amp;lt;select&amp;gt; 標籤</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space"> </span>*/</span></p>
+<p class="p2"><span class="s1">function generateCardSelectHtml(slotId, currentValue, allSelected, allowEmpty) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const cardStrs = getFullDeckCardStrs();</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>let optionsHtml = &amp;#39;&amp;#39;;</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>// 預設選項：空牌</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>if (allowEmpty || currentValue === &amp;#39;&amp;#39;) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">         </span>optionsHtml += `&amp;lt;option value=&amp;quot;&amp;quot; ${currentValue === &amp;#39;&amp;#39; ? &amp;#39;selected&amp;#39; : &amp;#39;&amp;#39;}&amp;gt;-- (空牌) --&amp;lt;/option&amp;gt;`;</span></p>
 <p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
 <p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>/**</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>* 獲取所有當前已被選取的卡牌字串</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>*/</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>function getAllSelectedCardStrs() {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>return [...player1CardStrs, ...player2CardStrs, ...boardCardStrs].filter(s =&gt; s !== '');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>// --- UI 渲染與互動邏輯 (Dropdowns) ---</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>/**</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>* 獲取所有 52 張卡牌的選項 HTML</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>* @returns {Array&lt;string&gt;} 包含所有卡牌字串的陣列 (例如 'AS', 'KH', '3D', ...)</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>*/</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>function getFullDeckCardStrs() {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const deck = createDeck();</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>return deck.map(c =&gt; c.str);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>/**</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>* 生成單一卡牌下拉選單的 HTML</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>* @param {string} slotId - 欄位 ID (例如 'p1-0', 'board-3')</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>* @param {string} currentValue - 當前選中的卡牌字串</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>* @param {string[]} allSelected - 所有已被選取的卡牌字串</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>* @param {boolean} allowEmpty - 是否允許 "-- (空牌) --" 選項</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>* @returns {string} HTML &lt;select&gt; 標籤</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>*/</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>function generateCardSelectHtml(slotId, currentValue, allSelected, allowEmpty) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const cardStrs = getFullDeckCardStrs();</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>let optionsHtml = '';</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>cardStrs.forEach(cardStr =&amp;gt; {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const isSelectedByOthers = allSelected.includes(cardStr) &amp;amp;&amp;amp; cardStr !== currentValue;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const isRed = cardStr[1].toLowerCase() === &amp;#39;h&amp;#39; || cardStr[1].toLowerCase() === &amp;#39;d&amp;#39;;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const suitSymbol = SUIT_SYMBOLS[cardStr[1].toLowerCase()];</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const colorClass = isRed ? &amp;#39;red-suit&amp;#39; : &amp;#39;black-suit&amp;#39;;</span></p>
 <p class="p3"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>// 預設選項：空牌</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>if (allowEmpty || currentValue === '') {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">             </span>optionsHtml += `&lt;option value="" ${currentValue === '' ? 'selected' : ''}&gt;-- (空牌) --&lt;/option&gt;`;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>cardStrs.forEach(cardStr =&gt; {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const isSelectedByOthers = allSelected.includes(cardStr) &amp;&amp; cardStr !== currentValue;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const isRed = cardStr[1].toLowerCase() === 'h' || cardStr[1].toLowerCase() === 'd';</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const suitSymbol = SUIT_SYMBOLS[cardStr[1].toLowerCase()];</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const colorClass = isRed ? 'red-suit' : 'black-suit';</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>// 如果被其他地方選中，則禁用</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const disabledAttr = isSelectedByOthers ? 'disabled' : '';</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>// 顯示為 Rank + Suit Symbol</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const optionText = `${cardStr[0]} ${suitSymbol}`;</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>optionsHtml += `</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&lt;option<span class="Apple-converted-space"> </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>value="${cardStr}"<span class="Apple-converted-space"> </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>${currentValue === cardStr ? 'selected' : ''}<span class="Apple-converted-space"> </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>${disabledAttr}<span class="Apple-converted-space"> </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>class="${colorClass}"</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>${optionText}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/option&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>`;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>});</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>// 確保 onchange 呼叫一個全局可用的函數</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>// 注意: 為了避免在 HTML 中寫過多 JS 邏輯，這裡使用了一個名為 handleDropdownChange 的全局函數</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>return `</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;select<span class="Apple-converted-space"> </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>id="${slotId}"<span class="Apple-converted-space"> </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>data-slot-id="${slotId}"</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>class="card-select w-full p-2 bg-white text-gray-900 rounded-md border border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base"</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>onchange="handleDropdownChange(this)"</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>${optionsHtml}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/select&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>// 如果被其他地方選中，則禁用</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const disabledAttr = isSelectedByOthers ? &amp;#39;disabled&amp;#39; : &amp;#39;&amp;#39;;</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>// 顯示為 Rank + Suit Symbol</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const optionText = `${cardStr[0]} ${suitSymbol}`;</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>optionsHtml += `</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&amp;lt;option<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>value=&amp;quot;${cardStr}&amp;quot;<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>${currentValue === cardStr ? &amp;#39;selected&amp;#39; : &amp;#39;&amp;#39;}<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>${disabledAttr}<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>class=&amp;quot;${colorClass}&amp;quot;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&amp;gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>${optionText}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&amp;lt;/option&amp;gt;</span></p>
 <p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>`;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>// 將 handleDropdownChange 定義為全局函數</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>window.handleDropdownChange = function(selectElement) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const slotId = selectElement.getAttribute('data-slot-id');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const newValue = selectElement.value; // Card string or ''</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const [target, indexStr] = slotId.split('-');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const index = parseInt(indexStr);</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>switch (target) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>case 'p1':</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>player1CardStrs[index] = newValue;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>break;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>case 'p2':</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>player2CardStrs[index] = newValue;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>break;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>case 'board':</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>// 如果用戶在 Flop/Turn/River 選了空牌，則清空後面的所有牌</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>if (newValue === '') {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>for (let i = index + 1; i &lt; 5; i++) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                        </span>boardCardStrs[i] = '';</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>boardCardStrs[index] = newValue;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>break;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>// 重新渲染所有下拉選單，以更新禁用狀態和公共牌的插槽數量</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>renderAllDropdowns();</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>/**</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>* 渲染所有下拉選單</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>*/</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>function renderAllDropdowns() {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const allSelected = getAllSelectedCardStrs();</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>errorMsgEl.classList.add('hidden');</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>// --- 玩家 1 (必填) ---</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const p1Html = player1CardStrs.map((cardStr, index) =&gt; `</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="w-1/2 p-1"&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&lt;label class="block text-xs font-medium text-gray-400 mb-1"&gt;牌 ${index + 1}&lt;/label&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>${generateCardSelectHtml(`p1-${index}`, cardStr, allSelected, false)}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>`).join('');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>p1DisplayEl.innerHTML = `&lt;div class="flex"&gt;${p1Html}&lt;/div&gt;`;</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>// --- 玩家 2 (選填) ---</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const p2Html = player2CardStrs.map((cardStr, index) =&gt; `</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="w-1/2 p-1"&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&lt;label class="block text-xs font-medium text-gray-400 mb-1"&gt;牌 ${index + 1}&lt;/label&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>${generateCardSelectHtml(`p2-${index}`, cardStr, allSelected, true)}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>`).join('');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>p2DisplayEl.innerHTML = `&lt;div class="flex"&gt;${p2Html}&lt;/div&gt;`;</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>// --- 公共牌 ---</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const boardSlotTitles = ['Flop 1', 'Flop 2', 'Flop 3', 'Turn', 'River'];</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const currentBoardLength = boardCardStrs.filter(s =&gt; s !== '').length;</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>let finalBoardHtml = '';</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>// 固定渲染 5 個插槽，但只允許選取到「當前已選的下一張」</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>for (let index = 0; index &lt; 5; index++) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const cardStr = boardCardStrs[index];</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>// 允許選擇已選的牌和下一個空位 (實現連續選牌)</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const allowSelect = index &lt;= currentBoardLength;<span class="Apple-converted-space"> </span></span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>if (allowSelect) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                 </span>// 只有第一個插槽在空牌時使用 "-- (空牌) --"，其他後續插槽若允許選取，則必須選牌或清空前一格</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                 </span>const allowEmptyOption = index === 0 || cardStr === '';</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">                 </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                 </span>finalBoardHtml += `</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="w-1/5 p-1 min-w-[70px]"&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;label class="block text-xs font-medium text-gray-400 mb-1"&gt;${boardSlotTitles[index]}&lt;/label&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                        </span>${generateCardSelectHtml(`board-${index}`, cardStr, allSelected, allowEmptyOption)}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>`;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>boardDisplayEl.innerHTML = `&lt;div class="flex flex-wrap"&gt;${finalBoardHtml}&lt;/div&gt;`;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>// --- 撲克牌手牌評估核心邏輯 (保持不變) ---</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const HAND_RANKS = {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>STRAIGHT_FLUSH: 9, FOUR_OF_A_KIND: 8, FULL_HOUSE: 7, FLUSH: 6, STRAIGHT: 5,<span class="Apple-converted-space"> </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>THREE_OF_A_KIND: 4, TWO_PAIR: 3, ONE_PAIR: 2, HIGH_CARD: 1</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>};</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>function getBestFiveCardHand(sevenCards) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const sortedRanks = sevenCards.map(c =&gt; c.rank).sort((a, b) =&gt; b - a);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const rankCounts = sortedRanks.reduce((acc, rank) =&gt; {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>acc[rank] = (acc[rank] || 0) + 1;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>return acc;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}, {});</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const counts = Object.entries(rankCounts).map(([rank, count]) =&gt; ({ rank: parseInt(rank), count })).sort((a, b) =&gt; {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>if (b.count !== a.count) return b.count - a.count;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>return b.rank - a.rank;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>});</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const uniqueRanks = Array.from(new Set(sortedRanks));</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>if (uniqueRanks.includes(14)) uniqueRanks.push(1);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>uniqueRanks.sort((a, b) =&gt; b - a);</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>let straightHigh = 0;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>for (let i = 0; i &lt;= uniqueRanks.length - 5; i++) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>if (uniqueRanks[i] === uniqueRanks[i + 4] + 4) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>straightHigh = uniqueRanks[i];</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>break;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const isStraight = straightHigh &gt; 0;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const suitCounts = sevenCards.reduce((acc, c) =&gt; {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>acc[c.suit] = acc[c.suit] || [];</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>acc[c.suit].push(c.rank);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>return acc;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}, {});</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>let flushSuit = null;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>let flushRanks = [];</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>for (const suit of SUITS) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>if (suitCounts[suit] &amp;&amp; suitCounts[suit].length &gt;= 5) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>flushSuit = suit;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>flushRanks = suitCounts[suit].sort((a, b) =&gt; b - a).slice(0, 5);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>break;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const isFlush = flushSuit !== null;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>if (isFlush) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const flushUniqueRanks = Array.from(new Set(flushRanks));</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>if (flushUniqueRanks.includes(14)) flushUniqueRanks.push(1);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>flushUniqueRanks.sort((a, b) =&gt; b - a);</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>let straightFlushHigh = 0;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>for (let i = 0; i &lt;= flushUniqueRanks.length - 5; i++) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>if (flushUniqueRanks[i] === flushUniqueRanks[i + 4] + 4) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>straightFlushHigh = flushUniqueRanks[i];</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>break;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>if (straightFlushHigh &gt; 0) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>return { rank: HAND_RANKS.STRAIGHT_FLUSH, kickers: [straightFlushHigh] };</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>if (counts[0] &amp;&amp; counts[0].count === 4) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const quadRank = counts[0].rank;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const kicker = sortedRanks.find(r =&gt; r !== quadRank);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>return { rank: HAND_RANKS.FOUR_OF_A_KIND, kickers: [quadRank, kicker || 0] };</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>if (counts[0] &amp;&amp; counts[0].count &gt;= 3 &amp;&amp; counts[1] &amp;&amp; counts[1].count &gt;= 2) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>return { rank: HAND_RANKS.FULL_HOUSE, kickers: [counts[0].rank, counts[1].rank] };</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>if (isFlush) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>return { rank: HAND_RANKS.FLUSH, kickers: flushRanks };</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>if (isStraight) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>return { rank: HAND_RANKS.STRAIGHT, kickers: [straightHigh] };</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>if (counts[0] &amp;&amp; counts[0].count === 3) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const threeRank = counts[0].rank;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const kickers = sortedRanks.filter(r =&gt; r !== threeRank).slice(0, 2);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>return { rank: HAND_RANKS.THREE_OF_A_KIND, kickers: [threeRank, ...kickers] };</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>if (counts[0] &amp;&amp; counts[0].count === 2 &amp;&amp; counts[1] &amp;&amp; counts[1].count === 2) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const pair1Rank = counts[0].rank;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const pair2Rank = counts[1].rank;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const kicker = sortedRanks.find(r =&gt; r !== pair1Rank &amp;&amp; r !== pair2Rank);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>return { rank: HAND_RANKS.TWO_PAIR, kickers: [pair1Rank, pair2Rank, kicker || 0] };</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>if (counts[0] &amp;&amp; counts[0].count === 2) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const pairRank = counts[0].rank;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const kickers = sortedRanks.filter(r =&gt; r !== pairRank).slice(0, 3);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>return { rank: HAND_RANKS.ONE_PAIR, kickers: [pairRank, ...kickers] };</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>return { rank: HAND_RANKS.HIGH_CARD, kickers: sortedRanks.slice(0, 5) };</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>/**</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>* 比較兩手牌的評估結果</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>* @returns {number} - 1 (Hand 1 勝), -1 (Hand 2 勝), 0 (和局)</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>*/</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>function compareHands(hand1, hand2) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>if (hand1.rank !== hand2.rank) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>return hand1.rank &gt; hand2.rank ? 1 : -1;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>for (let i = 0; i &lt; hand1.kickers.length; i++) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>if (hand1.kickers[i] !== hand2.kickers[i]) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>return hand1.kickers[i] &gt; hand2.kickers[i] ? 1 : -1;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>return 0;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>// --- Monte Carlo 模擬主函數 (更新以支持多玩家) ---</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>/**</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>* 執行 Monte Carlo 模擬並計算勝率</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>*/</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>async function calculateEquity() {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>// 1. 重設 UI 和錯誤訊息</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>errorMsgEl.classList.add('hidden');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>resultsDisplay.classList.add('hidden');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>loadingSpinner.classList.remove('hidden');</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const numPlayers = parseInt(numPlayersEl.value);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const p1Cards = player1CardStrs.filter(s =&gt; s !== '').map(parseCard);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const rawBoardCards = boardCardStrs;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const p2CardsProvided = player2CardStrs.filter(s =&gt; s !== '').length === 2;</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>try {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>// 2. 驗證輸入數量</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>if (p1Cards.length !== 2) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>throw new Error('玩家 1 必須剛好選取 2 張手牌。');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>if (player2CardStrs.filter(s =&gt; s !== '').length === 1) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>throw new Error('玩家 2 的手牌必須是 2 張或 0 張。');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>// 檢查板牌是否連續</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>let boardCards = [];</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>let hasEmptySlot = false;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>for(const cardStr of rawBoardCards) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>if (cardStr === '') {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>hasEmptySlot = true;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>} else if (hasEmptySlot) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>throw new Error('公共牌不能有中間的空牌插槽。請確保按順序選牌。');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>} else {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>boardCards.push(parseCard(cardStr));</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>// 3. 確定對手數量和類型</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>let knownOpponentHands = [];</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>if (p2CardsProvided) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>knownOpponentHands.push(player2CardStrs.filter(s =&gt; s !== '').map(parseCard));</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>// 總對手數 = 總玩家數 - 1 (P1)</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const totalOpponents = numPlayers - 1;<span class="Apple-converted-space"> </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>// 未知對手數 = 總對手數 - 已知對手數 (P2)</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const unknownOpponentCount = totalOpponents - knownOpponentHands.length;<span class="Apple-converted-space"> </span></span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>if (unknownOpponentCount &lt; 0) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>throw new Error('總玩家人數少於已輸入的玩家手牌數量。');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>// 4. 檢查重複卡牌</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const knownCardStrs = getAllSelectedCardStrs();</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const uniqueCardStrs = new Set(knownCardStrs);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>if (uniqueCardStrs.size !== knownCardStrs.length) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>throw new Error('輸入卡牌中存在重複的牌。請檢查您的選取。');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>// 5. 建立未知牌組 (Deck)</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const deck = createDeck();</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const usedCardStrs = new Set(knownCardStrs);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const unknownDeck = deck.filter(card =&gt; !usedCardStrs.has(card.str.toUpperCase()));</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>// 確保牌組足夠</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>if (unknownDeck.length &lt; (2 * unknownOpponentCount) + (5 - boardCards.length)) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>throw new Error('牌組中剩餘的牌不足以模擬所有未知手牌和公共牌。請檢查輸入是否過多或牌數設置錯誤。');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>// 6. 執行模擬</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>let wins = 0;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>let ties = 0;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>let losses = 0;</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const cardsNeededOnBoard = 5 - boardCards.length;</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>await new Promise(resolve =&gt; setTimeout(resolve, 10));</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>for (let i = 0; i &lt; NUM_ITERATIONS; i++) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>let availableCards = [...unknownDeck];</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>// 簡單的洗牌 (Fisher-Yates)</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>for (let j = availableCards.length - 1; j &gt; 0; j--) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>const k = Math.floor(Math.random() * (j + 1));</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>[availableCards[j], availableCards[k]] = [availableCards[k], availableCards[j]];</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>// 發出剩餘的公共牌</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>const dealtBoardCards = availableCards.splice(0, cardsNeededOnBoard);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>const finalBoard = [...boardCards, ...dealtBoardCards];</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>// 發出所有未知對手的手牌</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>let dealtOpponentHands = [];</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>for (let j = 0; j &lt; unknownOpponentCount; j++) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>// 每手牌 2 張</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>dealtOpponentHands.push(availableCards.splice(0, 2));</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>// 合併所有對手的手牌 (已知 + 未知)</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>const allOpponentHands = [...knownOpponentHands, ...dealtOpponentHands];</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>// 比較 P1 對抗所有對手</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>const p1SevenCards = [...p1Cards, ...finalBoard];</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>const p1HandRank = getBestFiveCardHand(p1SevenCards);</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>let bestOpponentRank = null;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>let hasTieWithBestOpponent = false;</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>// 找出所有對手中最強的一手牌</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>for (const opponentHand of allOpponentHands) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>const opponentSevenCards = [...opponentHand, ...finalBoard];</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>const opponentHandRank = getBestFiveCardHand(opponentSevenCards);</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>if (bestOpponentRank === null || compareHands(opponentHandRank, bestOpponentRank) === 1) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                        </span>bestOpponentRank = opponentHandRank;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                        </span>hasTieWithBestOpponent = false;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>} else if (compareHands(opponentHandRank, bestOpponentRank) === 0) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                         </span>hasTieWithBestOpponent = true;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>if (bestOpponentRank === null) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>// 如果沒有對手 (numPlayers=1, 不可能發生, 但以防萬一)</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>wins++;<span class="Apple-converted-space"> </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>} else {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>const finalResult = compareHands(p1HandRank, bestOpponentRank);</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">                    </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>if (finalResult === 1) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                        </span>wins++; // P1 嚴格擊敗最強對手</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>} else if (finalResult === 0) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                        </span>ties++; // P1 與最強對手打平</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>} else {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                        </span>losses++; // P1 輸給最強對手</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>// 7. 顯示結果</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const total = wins + ties + losses;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const winRate = (wins / total * 100).toFixed(2);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const tieRate = (ties / total * 100).toFixed(2);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const lossRate = (losses / total * 100).toFixed(2);</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>winRateEl.textContent = `${winRate}%`;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>tieRateEl.textContent = `${tieRate}%`;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>lossRateEl.textContent = `${lossRate}%`;</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>loadingSpinner.classList.add('hidden');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>resultsDisplay.classList.remove('hidden');</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>} catch (error) {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>loadingSpinner.classList.add('hidden');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>errorMsgEl.textContent = `錯誤：${error.message}`;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>errorMsgEl.classList.remove('hidden');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>// --- 事件監聽器和初始化 ---</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>document.addEventListener('DOMContentLoaded', () =&gt; {</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">         </span>resultsDisplay.classList.add('hidden');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">         </span>calculateBtn.addEventListener('click', calculateEquity);</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">         </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">         </span>// 初始化時渲染所有下拉選單</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">         </span>renderAllDropdowns();</span></p>
-<p class="p3"><span class="s1"><span class="Apple-converted-space">         </span></span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">         </span>// 確保在人數變動時，牌局顯示正確 (儘管邏輯上只有渲染會改變)</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">         </span>numPlayersEl.addEventListener('change', renderAllDropdowns);</span></p>
 <p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>});</span></p>
 <p class="p3"><span class="s1"></span><br></p>
-<p class="p2"><span class="s1">&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/body&gt; &lt;/html&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>// 確保 onchange 呼叫一個全局可用的函數</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>// 注意: 為了避免在 HTML 中寫過多 JS 邏輯，這裡使用了一個名為 handleDropdownChange 的全局函數</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>return `</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&amp;lt;select<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>id=&amp;quot;${slotId}&amp;quot;<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>data-slot-id=&amp;quot;${slotId}&amp;quot;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>class=&amp;quot;card-select w-full p-2 bg-white text-gray-900 rounded-md border border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base&amp;quot;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>onchange=&amp;quot;handleDropdownChange(this)&amp;quot;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&amp;gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>${optionsHtml}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&amp;lt;/select&amp;gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>`;</span></p>
+<p class="p2"><span class="s1">}</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1">// 將 handleDropdownChange 定義為全局函數</span></p>
+<p class="p2"><span class="s1">window.handleDropdownChange = function(selectElement) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const slotId = selectElement.getAttribute(&amp;#39;data-slot-id&amp;#39;);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const newValue = selectElement.value; // Card string or &amp;#39;&amp;#39;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const [target, indexStr] = slotId.split(&amp;#39;-&amp;#39;);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const index = parseInt(indexStr);</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>switch (target) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>case &amp;#39;p1&amp;#39;:</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>player1CardStrs[index] = newValue;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>break;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>case &amp;#39;p2&amp;#39;:</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>player2CardStrs[index] = newValue;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>break;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>case &amp;#39;board&amp;#39;:</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>// 如果用戶在 Flop/Turn/River 選了空牌，則清空後面的所有牌</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>if (newValue === &amp;#39;&amp;#39;) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>for (let i = index + 1; i &amp;lt; 5; i++) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>boardCardStrs[i] = &amp;#39;&amp;#39;;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>boardCardStrs[index] = newValue;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>break;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>// 重新渲染所有下拉選單，以更新禁用狀態和公共牌的插槽數量</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>renderAllDropdowns();</span></p>
+<p class="p2"><span class="s1">}</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1">/**</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space"> </span>* 渲染所有下拉選單</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space"> </span>*/</span></p>
+<p class="p2"><span class="s1">function renderAllDropdowns() {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const allSelected = getAllSelectedCardStrs();</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>errorMsgEl.classList.add(&amp;#39;hidden&amp;#39;);</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>// --- 玩家 1 (必填) ---</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const p1Html = player1CardStrs.map((cardStr, index) =&amp;gt; `</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&amp;lt;div class=&amp;quot;w-1/2 p-1&amp;quot;&amp;gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&amp;lt;label class=&amp;quot;block text-xs font-medium text-gray-400 mb-1&amp;quot;&amp;gt;牌 ${index + 1}&amp;lt;/label&amp;gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>${generateCardSelectHtml(`p1-${index}`, cardStr, allSelected, false)}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&amp;lt;/div&amp;gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>`).join(&amp;#39;&amp;#39;);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>p1DisplayEl.innerHTML = `&amp;lt;div class=&amp;quot;flex&amp;quot;&amp;gt;${p1Html}&amp;lt;/div&amp;gt;`;</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>// --- 玩家 2 (選填) ---</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const p2Html = player2CardStrs.map((cardStr, index) =&amp;gt; `</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&amp;lt;div class=&amp;quot;w-1/2 p-1&amp;quot;&amp;gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>&amp;lt;label class=&amp;quot;block text-xs font-medium text-gray-400 mb-1&amp;quot;&amp;gt;牌 ${index + 1}&amp;lt;/label&amp;gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>${generateCardSelectHtml(`p2-${index}`, cardStr, allSelected, true)}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>&amp;lt;/div&amp;gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>`).join(&amp;#39;&amp;#39;);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>p2DisplayEl.innerHTML = `&amp;lt;div class=&amp;quot;flex&amp;quot;&amp;gt;${p2Html}&amp;lt;/div&amp;gt;`;</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>// --- 公共牌 ---</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const boardSlotTitles = [&amp;#39;Flop 1&amp;#39;, &amp;#39;Flop 2&amp;#39;, &amp;#39;Flop 3&amp;#39;, &amp;#39;Turn&amp;#39;, &amp;#39;River&amp;#39;];</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const currentBoardLength = boardCardStrs.filter(s =&amp;gt; s !== &amp;#39;&amp;#39;).length;</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>let finalBoardHtml = &amp;#39;&amp;#39;;</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>// 固定渲染 5 個插槽，但只允許選取到「當前已選的下一張」</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>for (let index = 0; index &amp;lt; 5; index++) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const cardStr = boardCardStrs[index];</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>// 允許選擇已選的牌和下一個空位 (實現連續選牌)</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const allowSelect = index &amp;lt;= currentBoardLength;<span class="Apple-converted-space"> </span></span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>if (allowSelect) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">             </span>// 只有第一個插槽在空牌時使用 &amp;quot;-- (空牌) --&amp;quot;，其他後續插槽若允許選取，則必須選牌或清空前一格</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">             </span>const allowEmptyOption = index === 0 || cardStr === &amp;#39;&amp;#39;;</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">             </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">             </span>finalBoardHtml += `</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&amp;lt;div class=&amp;quot;w-1/5 p-1 min-w-[70px]&amp;quot;&amp;gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>&amp;lt;label class=&amp;quot;block text-xs font-medium text-gray-400 mb-1&amp;quot;&amp;gt;${boardSlotTitles[index]}&amp;lt;/label&amp;gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>${generateCardSelectHtml(`board-${index}`, cardStr, allSelected, allowEmptyOption)}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>&amp;lt;/div&amp;gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>`;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>boardDisplayEl.innerHTML = `&amp;lt;div class=&amp;quot;flex flex-wrap&amp;quot;&amp;gt;${finalBoardHtml}&amp;lt;/div&amp;gt;`;</span></p>
+<p class="p2"><span class="s1">}</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1">// --- 撲克牌手牌評估核心邏輯 (保持不變) ---</span></p>
+<p class="p2"><span class="s1">const HAND_RANKS = {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>STRAIGHT_FLUSH: 9, FOUR_OF_A_KIND: 8, FULL_HOUSE: 7, FLUSH: 6, STRAIGHT: 5,<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>THREE_OF_A_KIND: 4, TWO_PAIR: 3, ONE_PAIR: 2, HIGH_CARD: 1</span></p>
+<p class="p2"><span class="s1">};</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1">function getBestFiveCardHand(sevenCards) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const sortedRanks = sevenCards.map(c =&amp;gt; c.rank).sort((a, b) =&amp;gt; b - a);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const rankCounts = sortedRanks.reduce((acc, rank) =&amp;gt; {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>acc[rank] = (acc[rank] || 0) + 1;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>return acc;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}, {});</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const counts = Object.entries(rankCounts).map(([rank, count]) =&amp;gt; ({ rank: parseInt(rank), count })).sort((a, b) =&amp;gt; {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>if (b.count !== a.count) return b.count - a.count;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>return b.rank - a.rank;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>});</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const uniqueRanks = Array.from(new Set(sortedRanks));</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>if (uniqueRanks.includes(14)) uniqueRanks.push(1);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>uniqueRanks.sort((a, b) =&amp;gt; b - a);</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>let straightHigh = 0;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>for (let i = 0; i &amp;lt;= uniqueRanks.length - 5; i++) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>if (uniqueRanks[i] === uniqueRanks[i + 4] + 4) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>straightHigh = uniqueRanks[i];</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>break;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const isStraight = straightHigh &amp;gt; 0;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const suitCounts = sevenCards.reduce((acc, c) =&amp;gt; {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>acc[c.suit] = acc[c.suit] || [];</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>acc[c.suit].push(c.rank);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>return acc;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}, {});</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>let flushSuit = null;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>let flushRanks = [];</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>for (const suit of SUITS) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>if (suitCounts[suit] &amp;amp;&amp;amp; suitCounts[suit].length &amp;gt;= 5) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>flushSuit = suit;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>flushRanks = suitCounts[suit].sort((a, b) =&amp;gt; b - a).slice(0, 5);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>break;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const isFlush = flushSuit !== null;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>if (isFlush) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const flushUniqueRanks = Array.from(new Set(flushRanks));</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>if (flushUniqueRanks.includes(14)) flushUniqueRanks.push(1);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>flushUniqueRanks.sort((a, b) =&amp;gt; b - a);</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>let straightFlushHigh = 0;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>for (let i = 0; i &amp;lt;= flushUniqueRanks.length - 5; i++) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>if (flushUniqueRanks[i] === flushUniqueRanks[i + 4] + 4) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>straightFlushHigh = flushUniqueRanks[i];</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>break;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>if (straightFlushHigh &amp;gt; 0) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>return { rank: HAND_RANKS.STRAIGHT_FLUSH, kickers: [straightFlushHigh] };</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>if (counts[0] &amp;amp;&amp;amp; counts[0].count === 4) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const quadRank = counts[0].rank;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const kicker = sortedRanks.find(r =&amp;gt; r !== quadRank);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>return { rank: HAND_RANKS.FOUR_OF_A_KIND, kickers: [quadRank, kicker || 0] };</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>if (counts[0] &amp;amp;&amp;amp; counts[0].count &amp;gt;= 3 &amp;amp;&amp;amp; counts[1] &amp;amp;&amp;amp; counts[1].count &amp;gt;= 2) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>return { rank: HAND_RANKS.FULL_HOUSE, kickers: [counts[0].rank, counts[1].rank] };</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>if (isFlush) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>return { rank: HAND_RANKS.FLUSH, kickers: flushRanks };</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>if (isStraight) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>return { rank: HAND_RANKS.STRAIGHT, kickers: [straightHigh] };</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>if (counts[0] &amp;amp;&amp;amp; counts[0].count === 3) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const threeRank = counts[0].rank;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const kickers = sortedRanks.filter(r =&amp;gt; r !== threeRank).slice(0, 2);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>return { rank: HAND_RANKS.THREE_OF_A_KIND, kickers: [threeRank, ...kickers] };</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>if (counts[0] &amp;amp;&amp;amp; counts[0].count === 2 &amp;amp;&amp;amp; counts[1] &amp;amp;&amp;amp; counts[1].count === 2) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const pair1Rank = counts[0].rank;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const pair2Rank = counts[1].rank;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const kicker = sortedRanks.find(r =&amp;gt; r !== pair1Rank &amp;amp;&amp;amp; r !== pair2Rank);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>return { rank: HAND_RANKS.TWO_PAIR, kickers: [pair1Rank, pair2Rank, kicker || 0] };</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>if (counts[0] &amp;amp;&amp;amp; counts[0].count === 2) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const pairRank = counts[0].rank;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const kickers = sortedRanks.filter(r =&amp;gt; r !== pairRank).slice(0, 3);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>return { rank: HAND_RANKS.ONE_PAIR, kickers: [pairRank, ...kickers] };</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>return { rank: HAND_RANKS.HIGH_CARD, kickers: sortedRanks.slice(0, 5) };</span></p>
+<p class="p2"><span class="s1">}</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1">/**</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space"> </span>* 比較兩手牌的評估結果</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space"> </span>* @returns {number} - 1 (Hand 1 勝), -1 (Hand 2 勝), 0 (和局)</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space"> </span>*/</span></p>
+<p class="p2"><span class="s1">function compareHands(hand1, hand2) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>if (hand1.rank !== hand2.rank) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>return hand1.rank &amp;gt; hand2.rank ? 1 : -1;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>for (let i = 0; i &amp;lt; hand1.kickers.length; i++) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>if (hand1.kickers[i] !== hand2.kickers[i]) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>return hand1.kickers[i] &amp;gt; hand2.kickers[i] ? 1 : -1;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>return 0;</span></p>
+<p class="p2"><span class="s1">}</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1">// --- Monte Carlo 模擬主函數 (更新以支持多玩家) ---</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1">/**</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space"> </span>* 執行 Monte Carlo 模擬並計算勝率</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space"> </span>*/</span></p>
+<p class="p2"><span class="s1">async function calculateEquity() {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>// 1. 重設 UI 和錯誤訊息</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>errorMsgEl.classList.add(&amp;#39;hidden&amp;#39;);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>resultsDisplay.classList.add(&amp;#39;hidden&amp;#39;);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>loadingSpinner.classList.remove(&amp;#39;hidden&amp;#39;);</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const numPlayers = parseInt(numPlayersEl.value);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const p1Cards = player1CardStrs.filter(s =&amp;gt; s !== &amp;#39;&amp;#39;).map(parseCard);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const rawBoardCards = boardCardStrs;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>const p2CardsProvided = player2CardStrs.filter(s =&amp;gt; s !== &amp;#39;&amp;#39;).length === 2;</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>try {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>// 2. 驗證輸入數量</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>if (p1Cards.length !== 2) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>throw new Error(&amp;#39;玩家 1 必須剛好選取 2 張手牌。&amp;#39;);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>if (player2CardStrs.filter(s =&amp;gt; s !== &amp;#39;&amp;#39;).length === 1) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>throw new Error(&amp;#39;玩家 2 的手牌必須是 2 張或 0 張。&amp;#39;);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>// 檢查板牌是否連續</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>let boardCards = [];</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>let hasEmptySlot = false;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>for(const cardStr of rawBoardCards) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>if (cardStr === &amp;#39;&amp;#39;) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>hasEmptySlot = true;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>} else if (hasEmptySlot) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>throw new Error(&amp;#39;公共牌不能有中間的空牌插槽。請確保按順序選牌。&amp;#39;);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>} else {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>boardCards.push(parseCard(cardStr));</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>// 3. 確定對手數量和類型</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>let knownOpponentHands = [];</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>if (p2CardsProvided) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>knownOpponentHands.push(player2CardStrs.filter(s =&amp;gt; s !== &amp;#39;&amp;#39;).map(parseCard));</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>// 總對手數 = 總玩家數 - 1 (P1)</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const totalOpponents = numPlayers - 1;<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>// 未知對手數 = 總對手數 - 已知對手數 (P2)</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const unknownOpponentCount = totalOpponents - knownOpponentHands.length;<span class="Apple-converted-space"> </span></span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>if (unknownOpponentCount &amp;lt; 0) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>throw new Error(&amp;#39;總玩家人數少於已輸入的玩家手牌數量。&amp;#39;);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>// 4. 檢查重複卡牌</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const knownCardStrs = getAllSelectedCardStrs();</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const uniqueCardStrs = new Set(knownCardStrs);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>if (uniqueCardStrs.size !== knownCardStrs.length) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>throw new Error(&amp;#39;輸入卡牌中存在重複的牌。請檢查您的選取。&amp;#39;);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>// 5. 建立未知牌組 (Deck)</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const deck = createDeck();</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const usedCardStrs = new Set(knownCardStrs);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const unknownDeck = deck.filter(card =&amp;gt; !usedCardStrs.has(card.str.toUpperCase()));</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>// 確保牌組足夠</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>if (unknownDeck.length &amp;lt; (2 * unknownOpponentCount) + (5 - boardCards.length)) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>throw new Error(&amp;#39;牌組中剩餘的牌不足以模擬所有未知手牌和公共牌。請檢查輸入是否過多或牌數設置錯誤。&amp;#39;);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>// 6. 執行模擬</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>let wins = 0;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>let ties = 0;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>let losses = 0;</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const cardsNeededOnBoard = 5 - boardCards.length;</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>await new Promise(resolve =&amp;gt; setTimeout(resolve, 10));</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>for (let i = 0; i &amp;lt; NUM_ITERATIONS; i++) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>let availableCards = [...unknownDeck];</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>// 簡單的洗牌 (Fisher-Yates)</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>for (let j = availableCards.length - 1; j &amp;gt; 0; j--) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>const k = Math.floor(Math.random() * (j + 1));</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>[availableCards[j], availableCards[k]] = [availableCards[k], availableCards[j]];</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>// 發出剩餘的公共牌</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const dealtBoardCards = availableCards.splice(0, cardsNeededOnBoard);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const finalBoard = [...boardCards, ...dealtBoardCards];</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>// 發出所有未知對手的手牌</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>let dealtOpponentHands = [];</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>for (let j = 0; j &amp;lt; unknownOpponentCount; j++) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>// 每手牌 2 張</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>dealtOpponentHands.push(availableCards.splice(0, 2));</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>// 合併所有對手的手牌 (已知 + 未知)</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const allOpponentHands = [...knownOpponentHands, ...dealtOpponentHands];</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>// 比較 P1 對抗所有對手</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const p1SevenCards = [...p1Cards, ...finalBoard];</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>const p1HandRank = getBestFiveCardHand(p1SevenCards);</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>let bestOpponentRank = null;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>let hasTieWithBestOpponent = false;</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>// 找出所有對手中最強的一手牌</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>for (const opponentHand of allOpponentHands) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>const opponentSevenCards = [...opponentHand, ...finalBoard];</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>const opponentHandRank = getBestFiveCardHand(opponentSevenCards);</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>if (bestOpponentRank === null || compareHands(opponentHandRank, bestOpponentRank) === 1) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>bestOpponentRank = opponentHandRank;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>hasTieWithBestOpponent = false;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>} else if (compareHands(opponentHandRank, bestOpponentRank) === 0) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                     </span>hasTieWithBestOpponent = true;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>if (bestOpponentRank === null) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>// 如果沒有對手 (numPlayers=1, 不可能發生, 但以防萬一)</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>wins++;<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>} else {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>const finalResult = compareHands(p1HandRank, bestOpponentRank);</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>if (finalResult === 1) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>wins++; // P1 嚴格擊敗最強對手</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>} else if (finalResult === 0) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>ties++; // P1 與最強對手打平</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>} else {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span>losses++; // P1 輸給最強對手</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>// 7. 顯示結果</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const total = wins + ties + losses;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const winRate = (wins / total * 100).toFixed(2);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const tieRate = (ties / total * 100).toFixed(2);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>const lossRate = (losses / total * 100).toFixed(2);</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>winRateEl.textContent = `${winRate}%`;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>tieRateEl.textContent = `${tieRate}%`;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>lossRateEl.textContent = `${lossRate}%`;</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>loadingSpinner.classList.add(&amp;#39;hidden&amp;#39;);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>resultsDisplay.classList.remove(&amp;#39;hidden&amp;#39;);</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>} catch (error) {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>loadingSpinner.classList.add(&amp;#39;hidden&amp;#39;);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>errorMsgEl.textContent = `錯誤：${error.message}`;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span>errorMsgEl.classList.remove(&amp;#39;hidden&amp;#39;);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1">}</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1">// --- 事件監聽器和初始化 ---</span></p>
+<p class="p3"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1">document.addEventListener(&amp;#39;DOMContentLoaded&amp;#39;, () =&amp;gt; {</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>resultsDisplay.classList.add(&amp;#39;hidden&amp;#39;);</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>calculateBtn.addEventListener(&amp;#39;click&amp;#39;, calculateEquity);</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">     </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>// 初始化時渲染所有下拉選單</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>renderAllDropdowns();</span></p>
+<p class="p3"><span class="s1"><span class="Apple-converted-space">     </span></span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>// 確保在人數變動時，牌局顯示正確 (儘管邏輯上只有渲染會改變)</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">     </span>numPlayersEl.addEventListener(&amp;#39;change&amp;#39;, renderAllDropdowns);</span></p>
+<p class="p2"><span class="s1">});</span></p>
+<p class="p1"><span class="s1">&lt;/script&gt;</span></p>
 </body>
 </html>
